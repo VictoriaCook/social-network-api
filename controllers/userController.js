@@ -67,6 +67,22 @@ const userController = {
       },
       
     // add friend
+    addFriend(req, res) {
+        User.findOneAndUpdate(
+          { _id: req.params.id },
+          { $addToSet: { friends: req.params.friendId } },
+          { runValidators: true, new: true }
+        )
+          .then((userData) =>
+            !userData
+              ? res.status(404).json({ message: "Oops! No user with this ID." })
+              : res.json(`New friend added: ${userData}`)
+          )
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+          });
+      },
 
     // remove friend
 };
