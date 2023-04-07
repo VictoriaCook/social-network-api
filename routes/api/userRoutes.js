@@ -12,8 +12,7 @@ const {
 
 // .../api/users
 
-router.route('/').post(addUser);
-// get(allUsers)
+router.route('/').post(addUser).get(allUsers);
 
 // .../api/users/:id
 
