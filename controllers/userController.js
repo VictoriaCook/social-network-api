@@ -25,6 +25,14 @@ const userController = {
       },
 
     // get user by ID
+    userById(req, res) {
+        User.findOne({ _id: req.params.id })
+          .then((userData) => res.json(userData))
+          .catch((err) => {
+            console.log("Oops! An error has occurred.", err);
+            res.status(500).json(err);
+          });
+      },
 
     // update user
 
