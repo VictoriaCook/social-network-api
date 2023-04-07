@@ -85,6 +85,22 @@ const userController = {
       },
 
     // remove friend
+    deleteFriend(req, res) {
+        User.findOneAndUpdate(
+          { _id: req.params.id },
+          { $pull: { friends: req.params.friendId } },
+          { runValidators: true, new: true }
+        )
+          .then((userData) =>
+            !userData
+              ? res.status(404).json({ message: "Oops! No user with this ID." })
+              : res.json(`This friend has been deleted: ${userData}`)
+          )
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+          });
+      },
 };
 
 module.exports = userController;
