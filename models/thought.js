@@ -1,6 +1,38 @@
 const { Schema, model, Types } = require("mongoose");
 const dayjs = require("dayjs");
 
+// reaction schema (subdocument schema in thought model)
+
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      // minlength: 1, is this required?
+      maxlength: 280,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAtVal) =>
+        dayjs(createdAtVal).format("DD/MM/YYYY [at] h:mm:ss A"),
+    },
+  },
+  {
+    toJSON: {
+      getters: true,
+    },
+  }
+);
+
 // thought model schema
 
 const thoughtSchema = new Schema(
@@ -30,38 +62,6 @@ const thoughtSchema = new Schema(
     id: false,
   }
 );
-
-// reaction schema (subdocument schema in thought model)
-
-const reactionSchema = new Schema(
-    {
-      reactionId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId(),
-      },
-      reactionBody: {
-        type: String,
-        required: true,
-        // minlength: 1, is this required?
-        maxlength: 280,
-      },
-      username: {
-        type: String,
-        required: true,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-        get: (createdAtVal) =>
-          dayjs(createdAtVal).format("DD/MM/YYYY [at] h:mm:ss A"),
-      },
-    },
-    {
-      toJSON: {
-        getters: true,
-      },
-    }
-  );
 
 // initialise thought model
 
