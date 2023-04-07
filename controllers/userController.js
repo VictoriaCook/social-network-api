@@ -56,7 +56,16 @@ const userController = {
       },
 
     // delete user
-
+    deleteUser(req, res) {
+        User.findByIdAndDelete({ _id: req.params.id })
+          .then((userData) =>
+            !userData
+              ? res.status(404).json({ message: "Oops! No user with this ID." })
+              : res.json({ message: "User deleted" })
+          )
+          .catch((err) => res.status(500).json(err));
+      },
+      
     // add friend
 
     // remove friend
